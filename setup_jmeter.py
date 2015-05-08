@@ -15,19 +15,18 @@ LOCAL_FILE_PATH = join(config.PATH_TO_INSTALL, FILENAME)
 LOCAL_FOLDER_PATH = join(config.PATH_TO_INSTALL, FOLDERNAME)
 
 
-def get_jmeter():
+def get_file(filename, filepath, url):
     '''
-    Get JMeter from repository.
+    Get file from url.
 
     Returns:
-        bool: True if it was downloaded successfully, False otherwise.
-
+        bool: True file was downloaded successfully, False otherwise.
     '''
     # Check if already exists. If not, download and write it to disk.
-    if not exists(LOCAL_FILE_PATH):
+    if not exists(filepath):
         # Get file
-        print 'Downloading JMeter. Please wait...'
-        response = requests.get(URL)
+        print 'Downloading {0}. Please wait...'.format(filename)
+        response = requests.get(url)
         print 'Download complete.'
 
         # Check if request was successful
@@ -36,8 +35,8 @@ def get_jmeter():
 
         try:
             # Save file to disk
-            print 'Saving JMeter. Please wait...'
-            with open(LOCAL_FILE_PATH, 'w') as local_file:
+            print 'Saving {0}. Please wait...'.format(filename)
+            with open(filepath, 'w') as local_file:
                 for block in response.iter_content(1024):
                     local_file.write(block)
             print 'Save complete.'
@@ -45,7 +44,7 @@ def get_jmeter():
             print 'Unable to open file'
             return False
     else:
-        print 'JMeter already present exists.'
+        print '{0} already present exists.'.format(filename)
 
     return True
 
@@ -82,7 +81,7 @@ def install_jmeter():
         bool: True if it was setup successfully, False otherwise.
 
     '''
-    if get_jmeter() == True:
+    if get_file('apache-jmeter', LOCAL_FILE_PATH, URL) == True:
         return extract_jmeter()
 
     return False
