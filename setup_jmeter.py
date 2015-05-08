@@ -5,33 +5,39 @@ Setup JMeter locally.
 import config
 import requests
 from os.path import exists, join
+from zipfile import ZipFile
+
+
+FILENAME = 'apache-jmeter-' + config.VERSION + '.zip'
+FOLDERNAME = 'apache-jmeter-' + config.VERSION
+URL = config.SOURCE + FILENAME
+LOCAL_FILE_PATH = join(config.PATH_TO_INSTALL, FILENAME)
+LOCAL_FOLDER_PATH = join(config.PATH_TO_INSTALL, FOLDERNAME)
 
 
 def get_jmeter():
     '''
     Get JMeter from repository.
+
+    Returns:
+        bool: True if it was downloaded successfully, False otherwise.
+
     '''
-    # URL setup
-    filename = 'apache-jmeter-' + config.VERSION + '.zip'
-    url = config.SOURCE + filename
+    # Check if already exists. If not, download and write it to disk.
+    if not exists(LOCAL_FILE_PATH):
+        # Get file
+        print 'Downloading JMeter. Please wait...'
+        response = requests.get(URL)
+        print 'Download complete.'
 
-    # Get file
-    print 'Downloading JMeter. Please wait...'
-    response = requests.get(url)
-    print 'Download complete.'
+        # Check if request was successful
+        if not response.ok:
+            return False
 
-    # Check if request was successful
-    if not response.ok:
-        return False
-
-    # Save file on disk
-    print 'Saving JMeter. Please wait...'
-    local_file_path = join(config.PATH_TO_INSTALL, filename)
-
-    # Check if already exists. If not, write it to disk.
-    if not exists(local_file_path):
         try:
-            with open(local_file_path, 'w') as local_file:
+            # Save file to disk
+            print 'Saving JMeter. Please wait...'
+            with open(LOCAL_FILE_PATH, 'w') as local_file:
                 for block in response.iter_content(1024):
                     local_file.write(block)
             print 'Save complete.'
@@ -39,7 +45,7 @@ def get_jmeter():
             print 'Unable to open file'
             return False
     else:
-        print 'Already exists.'
+        print 'JMeter already present exists.'
 
     return True
 
@@ -47,8 +53,21 @@ def get_jmeter():
 def extract_jmeter():
     '''
     Extract JMeter zip.
+
+    Returns:
+        bool: True if it was extracted successfully, False otherwise.
+
     '''
-    pass
+    # Check if already exists. If not, extract it.
+    if not exists(LOCAL_FOLDER_PATH):
+        print 'Extracting JMeter. Please wait...'
+        jmeter_zip = ZipFile(LOCAL_FILE_PATH)
+        ZipFile.extractall(jmeter_zip, path=config.PATH_TO_INSTALL)
+        print 'JMeter installed.'
+    else:
+        print 'JMeter already installed.'
+
+    return True
 
 
 def install_jmeter():
@@ -56,11 +75,11 @@ def install_jmeter():
     Install JMeter locally.
 
     Returns:
-        bool: True was setup successfully, False otherwise.
+        bool: True if it was setup successfully, False otherwise.
 
     '''
-    get_jmeter()
-    extract_jmeter()
+    if get_jmeter() == True:
+        extract_jmeter()
 
 
 def setup_jmeter():
