@@ -96,7 +96,29 @@ def install_plugins():
         bool: True isntallation was successful, False otherwise.
 
     '''
-    pass
+    plugins = [(config.PLUGINS[plugin]['version'],
+                config.PLUGINS[plugin]['file_name'])
+               for plugin in config.PLUGINS
+               if config.PLUGINS[plugin]['install'] == True]
+
+    # JMeter folder where plugins will be installed
+    path_to_install = join(config.PATH_TO_INSTALL,
+                           ('apache-jmeter-' + config.VERSION))
+
+    for plugin in plugins:
+        # For each plugin we need to setup variables
+        filename = plugin[1] + '-' + plugin[0] + '.zip'
+        url = config.PLUGINS_SOURCE + filename
+        local_file_path = join(config.PATH_TO_INSTALL, filename)
+        local_folder_path = join(path_to_install,
+                                 (plugin[1] + '-' + plugin[0]))
+
+        # Get plugin
+        if get_file(plugin[1], local_file_path, url) == True:
+            # Extract plugin
+            return extract_file(plugin[1], local_file_path,
+                                local_folder_path, path_to_install)
+    return False
 
 
 def setup_jmeter():
