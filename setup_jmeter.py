@@ -44,31 +44,31 @@ def get_file(filename, filepath, url):
             print 'Unable to open file'
             return False
     else:
-        print '{0} already present exists.'.format(filename)
+        print '{0} already exists.'.format(filename)
 
     return True
 
 
-def extract_jmeter():
+def extract_file(filename, filepath, folderpath, path_to_extract):
     '''
-    Extract JMeter zip.
+    Extract file zip.
 
     Returns:
-        bool: True if it was extracted successfully, False otherwise.
+        bool: True file was extracted successfully, False otherwise.
 
     '''
     # Check if already exists. If not, extract it.
-    if not exists(LOCAL_FOLDER_PATH):
+    if not exists(folderpath):
         try:
-            print 'Extracting JMeter. Please wait...'
-            jmeter_zip = ZipFile(LOCAL_FILE_PATH)
-            ZipFile.extractall(jmeter_zip, path=config.PATH_TO_INSTALL)
-            print 'JMeter extracted.'
+            print 'Extracting {0}. Please wait...'.format(filename)
+            jmeter_zip = ZipFile(filepath)
+            ZipFile.extractall(jmeter_zip, path=path_to_extract)
+            print '{0} extracted.'.format(filename)
         except RuntimeError:
-            print 'JMeter failed to extract.'
+            print '{0} failed to extract.'.format(filename)
             return False
     else:
-        print 'JMeter already installed.'
+        print '{0} already extracted.'.format(filename)
 
     return True
 
@@ -82,7 +82,8 @@ def install_jmeter():
 
     '''
     if get_file('apache-jmeter', LOCAL_FILE_PATH, URL) == True:
-        return extract_jmeter()
+        return extract_file(FILENAME, LOCAL_FILE_PATH,
+                            LOCAL_FOLDER_PATH, config.PATH_TO_INSTALL)
 
     return False
 
