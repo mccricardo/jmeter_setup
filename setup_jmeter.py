@@ -20,7 +20,7 @@ def get_file(filename, filepath, url):
     Get file from url.
 
     Returns:
-        bool: True file was downloaded successfully, False otherwise.
+        bool: True if ile was downloaded successfully, False otherwise.
     '''
     # Check if already exists. If not, download and write it to disk.
     if not exists(filepath):
@@ -54,7 +54,7 @@ def extract_file(filename, filepath, folderpath, path_to_extract):
     Extract file zip.
 
     Returns:
-        bool: True file was extracted successfully, False otherwise.
+        bool: True if file was extracted successfully, False otherwise.
 
     '''
     # Check if already exists. If not, extract it.
@@ -78,7 +78,7 @@ def install_jmeter():
     Install JMeter locally.
 
     Returns:
-        bool: True if it was setup successfully, False otherwise.
+        bool: True isntallation was successful, False otherwise.
 
     '''
     if get_file('apache-jmeter', LOCAL_FILE_PATH, URL) == True:
@@ -86,6 +86,17 @@ def install_jmeter():
                             LOCAL_FOLDER_PATH, config.PATH_TO_INSTALL)
 
     return False
+
+
+def install_plugins():
+    '''
+    Install JMeter plugins locally.
+
+    Returns:
+        bool: True isntallation was successful, False otherwise.
+
+    '''
+    pass
 
 
 def setup_jmeter():
@@ -100,6 +111,15 @@ def setup_jmeter():
         print 'JMeter successfully  installed.'
     else:
         print 'JMeter installation failed.'
+        return False
+
+    if install_plugins():
+        print 'JMeter plugins successfully  installed.'
+    else:
+        print 'JMeter plugins installation failed.'
+        return False
+
+    return True
 
 
 if __name__ == '__main__':
