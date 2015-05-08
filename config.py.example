@@ -1,0 +1,39 @@
+# JMeter
+version = '2.13'
+source = 'https://archive.apache.org/dist/jmeter/binaries/'
+path_to_install = ''
+
+# JMeter plugins
+source = 'http://jmeter-plugins.org/downloads/file/'
+plugins = {
+    'Plugins Standard': {
+        'install': True,
+        'version': '1.2.1',
+        'file_name': 'JMeterPlugins-Standard'
+    },
+    'Server Agent': {
+        'install': False,
+        'version': '2.2.1',
+        'file_name': 'ServerAgent'
+    },
+    'Plugins Extras': {
+        'install': False,
+        'version': '1.2.1',
+        'file_name': 'JMeterPlugins-Extras'
+    },
+    'Plugins Extras Libs': {
+        'install': False,
+        'version': '1.2.1',
+        'file_name': 'JMeterPlugins-ExtrasLibs'
+    },
+    'Plugins WebDriver': {
+        'install': False,
+        'version': '1.2.1',
+        'file_name': 'JMeterPlugins-WebDriver'
+    },
+    'Plugins Hadoop': {
+        'install': False,
+        'version': '1.2.1',
+        'file_name': 'JMeterPlugins-Hadoop'
+    }
+}
