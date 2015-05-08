@@ -1,11 +1,15 @@
+'''
+Configuration file for JMeter setup.
+'''
+
 # JMeter
-version = '2.13'
-source = 'https://archive.apache.org/dist/jmeter/binaries/'
-path_to_install = ''
+VERSION = '2.13'
+SOURCE = 'https://archive.apache.org/dist/jmeter/binaries/'
+PATH_TO_INSTALL = ''
 
 # JMeter plugins
-source = 'http://jmeter-plugins.org/downloads/file/'
-plugins = {
+PLUGINS_SOURCE = 'http://jmeter-plugins.org/downloads/file/'
+PLUGINS = {
     'Plugins Standard': {
         'install': True,
         'version': '1.2.1',
