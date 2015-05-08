@@ -60,10 +60,14 @@ def extract_jmeter():
     '''
     # Check if already exists. If not, extract it.
     if not exists(LOCAL_FOLDER_PATH):
-        print 'Extracting JMeter. Please wait...'
-        jmeter_zip = ZipFile(LOCAL_FILE_PATH)
-        ZipFile.extractall(jmeter_zip, path=config.PATH_TO_INSTALL)
-        print 'JMeter installed.'
+        try:
+            print 'Extracting JMeter. Please wait...'
+            jmeter_zip = ZipFile(LOCAL_FILE_PATH)
+            ZipFile.extractall(jmeter_zip, path=config.PATH_TO_INSTALL)
+            print 'JMeter extracted.'
+        except RuntimeError:
+            print 'JMeter failed to extract.'
+            return False
     else:
         print 'JMeter already installed.'
 
@@ -79,7 +83,9 @@ def install_jmeter():
 
     '''
     if get_jmeter() == True:
-        extract_jmeter()
+        return extract_jmeter()
+
+    return False
 
 
 def setup_jmeter():
@@ -90,7 +96,11 @@ def setup_jmeter():
         bool: True was setup successfully, False otherwise.
 
     '''
-    install_jmeter()
+    if install_jmeter():
+        print 'JMeter successfully  installed.'
+    else:
+        print 'JMeter installation failed.'
+
 
 if __name__ == '__main__':
     setup_jmeter()
